@@ -1,0 +1,94 @@
+---
+const accounts = [
+  { icon: 'fa-brands fa-github', url: 'https://github.com/ryok', label: 'GitHub' },
+  { icon: 'fa-brands fa-x-twitter', url: 'https://x.com/anonymousgraba', label: 'X (Twitter)' },
+  { icon: 'fa-brands fa-linkedin-in', url: 'https://www.linkedin.com/in/ryookada-5298765a/', label: 'LinkedIn' },
+  { icon: 'fa-solid fa-pen-nib', url: 'https://zenn.dev/ryok', label: 'Zenn' },
+  { icon: 'fa-solid fa-note-sticky', url: 'https://note.com/ryok', label: 'note' },
+];
+---
+
+<section id="contact" class="section">
+  <div class="container">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-content">
+      <p>Feel free to reach out through any of these platforms.</p>
+      <div class="contact-grid">
+        {accounts.map(acc => (
+          <a href={acc.url} target="_blank" rel="noopener" class="contact-link glass">
+            <i class={acc.icon}></i>
+            <span>{acc.label}</span>
+          </a>
+        ))}
+      </div>
+      <p class="contact-location">
+        <i class="fa-solid fa-location-dot"></i> Tokyo, Japan
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; {new Date().getFullYear()} Ryo Okada. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .contact-content {
+    max-width: 600px;
+  }
+
+  .contact-content > p {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+  }
+
+  .contact-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+  }
+
+  .contact-link:hover {
+    color: var(--text-primary);
+  }
+
+  .contact-link i {
+    font-size: 1.1rem;
+    color: var(--accent-blue);
+  }
+
+  .contact-location {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .contact-location i {
+    color: var(--accent-pink);
+    margin-right: 6px;
+  }
+
+  .site-footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .site-footer p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: center;
+    opacity: 0.5;
+  }
+</style>

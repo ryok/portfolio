@@ -1,0 +1,135 @@
+---
+const links = [
+  { label: 'Works', href: '#gallery' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Research', href: '#research' },
+  { label: 'Writings', href: '#writings' },
+  { label: 'Career', href: '#career' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<nav id="nav">
+  <div class="nav-inner container">
+    <a href="#" class="nav-logo">ryok</a>
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      {links.map(link => (
+        <li><a href={link.href}>{link.label}</a></li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  #nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(13, 13, 13, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: all var(--transition);
+  }
+
+  #nav.scrolled {
+    background: rgba(13, 13, 13, 0.95);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.03em;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    transition: color var(--transition);
+  }
+
+  .nav-links a:hover {
+    color: var(--text-primary);
+  }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text-secondary);
+    transition: all var(--transition);
+  }
+
+  @media (max-width: 768px) {
+    .nav-toggle {
+      display: flex;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: rgba(13, 13, 13, 0.98);
+      backdrop-filter: blur(16px);
+      padding: 16px 24px;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links.open {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('nav');
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+
+  window.addEventListener('scroll', () => {
+    nav?.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  toggle?.addEventListener('click', () => {
+    links?.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => links?.classList.remove('open'));
+  });
+</script>

@@ -1,0 +1,105 @@
+---
+import type { Project } from '../utils/loadData';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const artProjects = projects.filter(p => p.type === 'art');
+const base = import.meta.env.BASE_URL;
+
+const imageMap: Record<string, string> = {
+  'Audio Reactive StyleGAN': 'stylegan.gif',
+  'Latent Space Interpolation': 'star.gif',
+  'Lyric Driven Music Video': 'OneMoreTime.gif',
+  'Prompt Driven Pixel Art': 'darkyoda.png',
+  'Genetic Algorithm (Mona Lisa)': 'monalisa.gif',
+};
+---
+
+<section id="gallery" class="section">
+  <div class="container">
+    <h2 class="section-title">Gallery</h2>
+    <div class="gallery-grid">
+      {artProjects.map(p => (
+        <div class="gallery-item glass">
+          {imageMap[p.name] && (
+            <div class="gallery-image">
+              <img src={`${base}images/${imageMap[p.name]}`} alt={p.name} loading="lazy" />
+            </div>
+          )}
+          <div class="gallery-info">
+            <h3>{p.name}</h3>
+            <p>{p.description}</p>
+            <div class="gallery-tags">
+              {p.tags.map(tag => <span class="tag">{tag}</span>)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .gallery-item {
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .gallery-image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition);
+  }
+
+  .gallery-item:hover .gallery-image img {
+    transform: scale(1.05);
+  }
+
+  .gallery-info {
+    padding: 16px;
+  }
+
+  .gallery-info h3 {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .gallery-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .gallery-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

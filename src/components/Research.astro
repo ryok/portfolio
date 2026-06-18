@@ -1,0 +1,70 @@
+---
+import type { Research } from '../utils/loadData';
+
+interface Props {
+  publications: Research[];
+}
+
+const { publications } = Astro.props;
+
+const urls: Record<string, string> = {
+  'ニューラルネットワークの知識蒸留による方程式抽出': 'https://www.jstage.jst.go.jp/article/pjsai/JSAI2022/0/JSAI2022_4Yin223/_article/-char/ja/',
+  'Construction and Validation of Action-Conditioned VideoGPT': 'https://www.jstage.jst.go.jp/article/pjsai/JSAI2023/0/JSAI2023_1G4OS21a02/_article/-char/en',
+  'Imitation Learning with Mid-Level Representations for Object Rearrangement': 'https://www.jstage.jst.go.jp/article/pjsai/JSAI2022/0/JSAI2022_3L4GS803/_article/-char/en',
+};
+---
+
+<section id="research" class="section">
+  <div class="container">
+    <h2 class="section-title">Research Publications</h2>
+    <div class="research-list">
+      {publications.map(pub => (
+        <a href={urls[pub.title] || '#'} target="_blank" rel="noopener" class="research-item glass">
+          <div class="research-venue">{pub.venue}</div>
+          <h3>{pub.title}</h3>
+          {pub.coauthors && (
+            <p class="research-authors">
+              <strong>Ryo Okada</strong>, {pub.coauthors.join(', ')}
+            </p>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .research-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .research-item {
+    display: block;
+    padding: 20px 24px;
+    color: var(--text-primary);
+  }
+
+  .research-item:hover {
+    color: var(--text-primary);
+  }
+
+  .research-venue {
+    font-size: 0.75rem;
+    color: var(--accent-purple);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 6px;
+  }
+
+  .research-item h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .research-authors {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+</style>

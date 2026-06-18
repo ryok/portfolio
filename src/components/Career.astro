@@ -1,0 +1,135 @@
+---
+import type { CareerData } from '../utils/loadData';
+
+interface Props {
+  career: CareerData;
+}
+
+const { career } = Astro.props;
+---
+
+<section id="career" class="section">
+  <div class="container">
+    <h2 class="section-title">Career</h2>
+    <div class="timeline">
+      {career.history.map((entry, i) => (
+        <div class={`timeline-item ${i === 0 ? 'current' : ''}`}>
+          <div class="timeline-marker"></div>
+          <div class="timeline-content glass">
+            <div class="timeline-period">{entry.period}</div>
+            <h3>{entry.organization}</h3>
+            <p class="timeline-role">{entry.role}</p>
+            <p class="timeline-focus">{entry.focus}</p>
+            {entry.awards && (
+              <div class="timeline-awards">
+                {entry.awards.map(a => <span class="tag">{a}</span>)}
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+
+      <div class="timeline-divider">Education</div>
+
+      {career.education.map(edu => (
+        <div class="timeline-item">
+          <div class="timeline-marker edu"></div>
+          <div class="timeline-content glass">
+            <div class="timeline-period">{edu.period}</div>
+            <h3>{edu.organization}</h3>
+            <p class="timeline-role">{edu.department}</p>
+            <p class="timeline-focus">{edu.focus}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .timeline-marker {
+    position: absolute;
+    left: -32px;
+    top: 20px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 2px solid var(--text-secondary);
+    z-index: 1;
+  }
+
+  .timeline-item.current .timeline-marker {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 12px rgba(74, 158, 255, 0.4);
+  }
+
+  .timeline-marker.edu {
+    border-color: var(--accent-green);
+  }
+
+  .timeline-content {
+    padding: 20px 24px;
+  }
+
+  .timeline-content:hover {
+    transform: none;
+  }
+
+  .timeline-period {
+    font-size: 0.75rem;
+    color: var(--accent-blue);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 6px;
+  }
+
+  .timeline-content h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .timeline-role {
+    font-size: 0.85rem;
+    color: var(--accent-purple);
+    margin-bottom: 6px;
+  }
+
+  .timeline-focus {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .timeline-awards {
+    margin-top: 8px;
+  }
+
+  .timeline-divider {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 24px 0 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+</style>
