@@ -17,6 +17,7 @@ export interface Project {
   highlight?: boolean;
   role?: string;
   type?: string;
+  image?: string;
 }
 
 export interface CareerEntry {
