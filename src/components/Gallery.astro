@@ -8,14 +8,6 @@ interface Props {
 const { projects } = Astro.props;
 const artProjects = projects.filter(p => p.type === 'art');
 const base = import.meta.env.BASE_URL;
-
-const imageMap: Record<string, string> = {
-  'Audio Reactive StyleGAN': 'stylegan.gif',
-  'Latent Space Interpolation': 'star.gif',
-  'Lyric Driven Music Video': 'OneMoreTime.gif',
-  'Prompt Driven Pixel Art': 'darkyoda.png',
-  'Genetic Algorithm (Mona Lisa)': 'monalisa.gif',
-};
 ---
 
 <section id="gallery" class="section">
@@ -24,9 +16,9 @@ const imageMap: Record<string, string> = {
     <div class="gallery-grid">
       {artProjects.map(p => (
         <div class="gallery-item glass">
-          {imageMap[p.name] && (
+          {p.image && (
             <div class="gallery-image">
-              <img src={`${base}images/${imageMap[p.name]}`} alt={p.name} loading="lazy" />
+              <img src={`${base}/images/${p.image}`} alt={p.name} loading="lazy" />
             </div>
           )}
           <div class="gallery-info">
