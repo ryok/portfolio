@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Gallery from '../components/Gallery.astro';
+import Projects from '../components/Projects.astro';
+import Research from '../components/Research.astro';
+import Writings from '../components/Writings.astro';
+import Career from '../components/Career.astro';
+import Skills from '../components/Skills.astro';
+import Contact from '../components/Contact.astro';
+import CosmicNetwork from '../components/CosmicNetwork.astro';
+import { loadProjects, loadCareer, loadSkills, loadWritings } from '../utils/loadData';
+
+const projects = loadProjects();
+const career = loadCareer();
+const skills = loadSkills();
+const writings = loadWritings();
+---
+
+<BaseLayout>
+  <Nav />
+  <Hero />
+  <Gallery projects={projects} />
+  <Projects projects={projects} />
+  <Research publications={career.research} />
+  <Writings writings={writings} />
+  <Career career={career} />
+  <Skills skills={skills} />
+  <Contact />
+  <CosmicNetwork />
+</BaseLayout>

@@ -1,0 +1,154 @@
+---
+import type { SkillsData } from '../utils/loadData';
+
+interface Props {
+  skills: SkillsData;
+}
+
+const { skills } = Astro.props;
+---
+
+<section id="skills" class="section">
+  <div class="container">
+    <h2 class="section-title">Skills & Certifications</h2>
+    <div class="skills-layout">
+      <div class="skills-col">
+        <h3 class="sub-title">Technical Skills</h3>
+        <div class="skill-categories">
+          {skills.technical.map(cat => (
+            <div class="skill-category">
+              <h4>{cat.category}</h4>
+              <div class="skill-items">
+                {cat.items.map(item => <span class="tag">{item}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {skills.kaggle && (
+          <div class="kaggle-section">
+            <h3 class="sub-title">Kaggle</h3>
+            <div class="glass kaggle-card">
+              <div class="kaggle-tier">{skills.kaggle.tier}</div>
+              <div class="kaggle-stats">
+                <span>Rank: {skills.kaggle.rank}</span>
+                <span>{skills.kaggle.competitions} competitions</span>
+                <span>Silver: {skills.kaggle.medals.silver} / Bronze: {skills.kaggle.medals.bronze}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div class="skills-col">
+        <h3 class="sub-title">Certifications</h3>
+        <div class="cert-list">
+          {skills.certifications.map(cert => (
+            <div class="cert-item">
+              <span class="cert-name">{cert.name}</span>
+              <span class="cert-year">{cert.year || cert.date}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+  }
+
+  .sub-title {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .skill-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .skill-category h4 {
+    font-size: 0.8rem;
+    color: var(--accent-purple);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .kaggle-section {
+    margin-top: 24px;
+  }
+
+  .kaggle-card {
+    padding: 16px 20px;
+  }
+
+  .kaggle-card:hover {
+    transform: none;
+  }
+
+  .kaggle-tier {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    margin-bottom: 8px;
+  }
+
+  .kaggle-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .cert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .cert-name {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    flex: 1;
+  }
+
+  .cert-year {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    .skills-layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>

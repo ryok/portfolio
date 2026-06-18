@@ -1,0 +1,190 @@
+---
+// p5.js cosmic network animation - loaded via CDN in BaseLayout
+---
+
+<script>
+  // Cosmic Network Animation for Portfolio (Astro version)
+  const maxParticles = 80;
+  const connectionDistance = 120;
+  let particles: any[] = [];
+
+  const sectionColors: Record<string, {r: number, g: number, b: number}> = {
+    hero: { r: 100, g: 200, b: 255 },
+    gallery: { r: 255, g: 100, b: 150 },
+    projects: { r: 74, g: 158, b: 255 },
+    research: { r: 167, g: 139, b: 250 },
+    career: { r: 150, g: 255, b: 100 },
+    contact: { r: 244, g: 114, b: 182 },
+  };
+
+  // @ts-ignore - p5 is loaded via CDN
+  new p5((p: any) => {
+    class Particle {
+      pos: any;
+      vel: any;
+      acc: any;
+      size: number;
+      lifespan: number;
+      maxLife: number;
+      pulsePhase: number;
+      colorPhase: number;
+      targetColor: {r: number, g: number, b: number} | null;
+      color: any;
+
+      constructor(x: number, y: number) {
+        this.pos = p.createVector(x, y);
+        this.vel = p.createVector(p.random(-0.8, 0.8), p.random(-0.8, 0.8));
+        this.acc = p.createVector(0, 0);
+        this.size = p.random(2, 6);
+        this.lifespan = 255;
+        this.maxLife = 255;
+        this.pulsePhase = p.random(p.TWO_PI);
+        this.colorPhase = p.random(p.TWO_PI);
+        this.targetColor = null;
+        this.updateColor();
+      }
+
+      applyForce(force: any) {
+        this.acc.add(force);
+      }
+
+      update() {
+        this.vel.add(this.acc);
+        this.vel.limit(1.5);
+        this.pos.add(this.vel);
+        this.acc.mult(0);
+
+        if (this.pos.x < 0 || this.pos.x > p.width) {
+          this.vel.x *= -0.9;
+          this.pos.x = p.constrain(this.pos.x, 0, p.width);
+        }
+        if (this.pos.y < 0 || this.pos.y > p.height) {
+          this.vel.y *= -0.9;
+          this.pos.y = p.constrain(this.pos.y, 0, p.height);
+        }
+
+        this.lifespan -= 0.3;
+        this.colorPhase += 0.015;
+        this.updateColor();
+      }
+
+      updateColor() {
+        let r = p.sin(this.colorPhase) * 127 + 128;
+        let g = p.sin(this.colorPhase + p.TWO_PI / 3) * 127 + 128;
+        let b = p.sin(this.colorPhase + p.TWO_PI * 2 / 3) * 127 + 128;
+
+        if (this.targetColor) {
+          r = p.lerp(r, this.targetColor.r, 0.05);
+          g = p.lerp(g, this.targetColor.g, 0.05);
+          b = p.lerp(b, this.targetColor.b, 0.05);
+        }
+
+        this.color = p.color(r, g, b);
+      }
+
+      display() {
+        const pulse = p.sin(p.frameCount * 0.04 + this.pulsePhase) * 0.4 + 1;
+        const currentSize = this.size * pulse;
+        const alpha = p.map(this.lifespan, 0, this.maxLife, 0, 200);
+
+        p.push();
+        p.drawingContext.shadowBlur = 15;
+        p.drawingContext.shadowColor = this.color.toString();
+        p.fill(p.red(this.color), p.green(this.color), p.blue(this.color), alpha);
+        p.noStroke();
+        p.ellipse(this.pos.x, this.pos.y, currentSize);
+        p.pop();
+      }
+
+      isDead() {
+        return this.lifespan <= 0;
+      }
+    }
+
+    p.setup = () => {
+      const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+      canvas.parent('cosmic-canvas');
+      canvas.style('position', 'fixed');
+      canvas.style('top', '0');
+      canvas.style('left', '0');
+
+      for (let i = 0; i < 25; i++) {
+        particles.push(new Particle(p.random(p.width), p.random(p.height)));
+      }
+    };
+
+    p.draw = () => {
+      p.push();
+      p.drawingContext.globalAlpha = 0.06;
+      p.fill(0);
+      p.noStroke();
+      p.rect(0, 0, p.width, p.height);
+      p.pop();
+
+      // Determine section color based on scroll
+      const scrollY = window.scrollY;
+      const sections = ['hero', 'gallery', 'projects', 'research', 'career', 'contact'];
+      let currentSection = 'hero';
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el && scrollY >= el.offsetTop - 300) {
+          currentSection = id;
+        }
+      }
+      const sectionColor = sectionColors[currentSection] || sectionColors.hero;
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const part = particles[i];
+        part.targetColor = sectionColor;
+
+        if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
+          const force = p.createVector(p.mouseX - part.pos.x, p.mouseY - part.pos.y);
+          force.mult(0.00005);
+          part.applyForce(force);
+        }
+
+        part.update();
+
+        if (part.isDead()) {
+          particles.splice(i, 1);
+        }
+      }
+
+      // Connections
+      p.strokeWeight(0.8);
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const d = p.dist(particles[i].pos.x, particles[i].pos.y, particles[j].pos.x, particles[j].pos.y);
+          if (d < connectionDistance) {
+            const alpha = p.map(d, 0, connectionDistance, 120, 0);
+            p.stroke(p.red(particles[i].color), p.green(particles[i].color), p.blue(particles[i].color), alpha);
+            p.line(particles[i].pos.x, particles[i].pos.y, particles[j].pos.x, particles[j].pos.y);
+          }
+        }
+      }
+
+      // Draw particles
+      p.noStroke();
+      for (const part of particles) {
+        part.display();
+      }
+
+      // Add new particles
+      if (particles.length < maxParticles && p.frameCount % 4 === 0) {
+        particles.push(new Particle(p.random(p.width), p.random(p.height)));
+      }
+    };
+
+    p.mousePressed = () => {
+      for (let i = 0; i < 3; i++) {
+        if (particles.length < maxParticles) {
+          particles.push(new Particle(p.mouseX + p.random(-15, 15), p.mouseY + p.random(-15, 15)));
+        }
+      }
+    };
+
+    p.windowResized = () => {
+      p.resizeCanvas(p.windowWidth, p.windowHeight);
+    };
+  }, document.getElementById('cosmic-canvas')!);
+</script>

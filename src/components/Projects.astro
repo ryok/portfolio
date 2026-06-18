@@ -1,0 +1,122 @@
+---
+import type { Project } from '../utils/loadData';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const ossProjects = projects.filter(p => !p.type || p.type !== 'art');
+---
+
+<section id="projects" class="section">
+  <div class="container">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+      {ossProjects.map(p => (
+        <a href={p.url || '#'} target="_blank" rel="noopener" class="project-card glass">
+          <div class="project-header">
+            <i class="fa-solid fa-folder-open project-icon"></i>
+            {p.url && <i class="fa-solid fa-arrow-up-right-from-square project-link-icon"></i>}
+          </div>
+          <h3>{p.name}</h3>
+          <p>{p.description}</p>
+          <div class="project-footer">
+            <div class="project-tags">
+              {p.tags.map(tag => <span class="tag">{tag}</span>)}
+            </div>
+            <span class="project-year">{p.year}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    color: var(--text-primary);
+    min-height: 180px;
+  }
+
+  .project-card:hover {
+    color: var(--text-primary);
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .project-icon {
+    font-size: 1.5rem;
+    color: var(--accent-blue);
+  }
+
+  .project-link-icon {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: all var(--transition);
+  }
+
+  .project-card:hover .project-link-icon {
+    color: var(--accent-cyan);
+    transform: translate(2px, -2px);
+  }
+
+  .project-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+
+  .project-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 16px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-year {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

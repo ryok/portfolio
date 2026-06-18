@@ -1,0 +1,25 @@
+# Astro
+dist/
+.astro/
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# Symlinked data (fetched in CI)
+src/data/*.yaml
+
+# Editor
+.vscode/
+.idea/
+
+# Temp files
+*.wav
+*.mp4
+*.txt

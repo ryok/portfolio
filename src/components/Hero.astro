@@ -1,0 +1,107 @@
+---
+const socials = [
+  { icon: 'fa-brands fa-github', url: 'https://github.com/ryok', label: 'GitHub' },
+  { icon: 'fa-brands fa-x-twitter', url: 'https://x.com/anonymousgraba', label: 'X' },
+  { icon: 'fa-brands fa-linkedin-in', url: 'https://www.linkedin.com/in/ryookada-5298765a/', label: 'LinkedIn' },
+  { icon: 'fa-solid fa-pen-nib', url: 'https://zenn.dev/ryok', label: 'Zenn' },
+];
+---
+
+<section id="hero">
+  <div class="container hero-content">
+    <p class="hero-greeting">Hi, I'm</p>
+    <h1 class="hero-name">Ryo Okada</h1>
+    <p class="hero-role">Software / AI ML Engineer</p>
+    <p class="hero-sub">
+      Research Engineer @ University of Tokyo, Matsuo Lab<br/>
+      AI x Music / Creative Coding / OSS
+    </p>
+    <div class="hero-socials">
+      {socials.map(s => (
+        <a href={s.url} target="_blank" rel="noopener" aria-label={s.label}>
+          <i class={s.icon}></i>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 56px;
+  }
+
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .hero-greeting {
+    font-size: 1rem;
+    color: var(--accent-blue);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .hero-name {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-role {
+    font-size: 1.35rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 32px;
+    opacity: 0.8;
+  }
+
+  .hero-socials {
+    display: flex;
+    gap: 16px;
+  }
+
+  .hero-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    transition: all var(--transition);
+  }
+
+  .hero-socials a:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-blue);
+    background: rgba(74, 158, 255, 0.1);
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-name {
+      font-size: 2.5rem;
+    }
+    .hero-role {
+      font-size: 1.1rem;
+    }
+  }
+</style>

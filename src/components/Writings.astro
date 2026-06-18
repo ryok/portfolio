@@ -1,0 +1,107 @@
+---
+import type { WritingsData } from '../utils/loadData';
+
+interface Props {
+  writings: WritingsData;
+}
+
+const { writings } = Astro.props;
+const activePlatforms = writings.platforms.filter(p => p.articles?.length > 0);
+---
+
+<section id="writings" class="section">
+  <div class="container">
+    <h2 class="section-title">Writings</h2>
+    {activePlatforms.map(platform => (
+      <div class="platform-section">
+        <h3 class="platform-name">
+          {platform.url ? (
+            <a href={platform.url} target="_blank" rel="noopener">
+              {platform.name}
+              {platform.article_count && <span class="article-count">{platform.article_count} articles</span>}
+            </a>
+          ) : (
+            <span>{platform.name}</span>
+          )}
+        </h3>
+        <div class="articles-list">
+          {platform.articles.slice(0, 5).map(article => (
+            <a href={article.url} target="_blank" rel="noopener" class="article-item glass">
+              <span class="article-title">{article.title}</span>
+              <span class="article-year">{article.year || article.date?.toString().slice(0, 4)}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .platform-section {
+    margin-bottom: 32px;
+  }
+
+  .platform-name {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .platform-name a {
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .platform-name a:hover {
+    color: var(--text-primary);
+  }
+
+  .article-count {
+    font-size: 0.7rem;
+    color: var(--accent-blue);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .article-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    color: var(--text-primary);
+    gap: 16px;
+  }
+
+  .article-item:hover {
+    color: var(--text-primary);
+  }
+
+  .article-title {
+    font-size: 0.9rem;
+    flex: 1;
+  }
+
+  .article-year {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    .article-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+  }
+</style>

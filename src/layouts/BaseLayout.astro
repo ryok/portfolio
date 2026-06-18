@@ -1,0 +1,161 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = "Ryo Okada - Portfolio" } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ryo Okada - Software / AI ML Engineer. Portfolio showcasing AI/ML projects, research, and creative coding." />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+  <canvas id="cosmic-canvas"></canvas>
+  <div id="page-wrapper">
+    <slot />
+  </div>
+</body>
+</html>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg-primary: #0d0d0d;
+    --bg-secondary: rgba(20, 20, 25, 0.9);
+    --bg-card: rgba(30, 30, 40, 0.6);
+    --bg-card-hover: rgba(40, 40, 55, 0.8);
+    --text-primary: #e8e8ec;
+    --text-secondary: #a0a0b0;
+    --text-accent: #7eb8ff;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    --accent-blue: #4a9eff;
+    --accent-purple: #a78bfa;
+    --accent-cyan: #22d3ee;
+    --accent-pink: #f472b6;
+    --accent-green: #4ade80;
+    --glass-blur: 12px;
+    --radius: 12px;
+    --radius-lg: 20px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  #cosmic-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  #page-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  a {
+    color: var(--text-accent);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  a:hover {
+    color: var(--accent-cyan);
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 80px 0;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border-hover), transparent);
+  }
+
+  .glass {
+    background: var(--bg-card);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all var(--transition);
+  }
+
+  .glass:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    border-radius: 100px;
+    background: rgba(74, 158, 255, 0.12);
+    color: var(--accent-blue);
+    border: 1px solid rgba(74, 158, 255, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .section {
+      padding: 48px 0;
+    }
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+    }
+    .container {
+      padding: 0 16px;
+    }
+  }
+</style>
