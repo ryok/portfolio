@@ -42,6 +42,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
         run: npm run build
 
       - name: Upload artifact
