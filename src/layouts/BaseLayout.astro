@@ -4,6 +4,12 @@ interface Props {
 }
 const { title = "Ryo Okada - Portfolio" } = Astro.props;
 const base = import.meta.env.BASE_URL;
+
+// Google Analytics 4: load only in production builds and only when an id is
+// configured. The PUBLIC_ prefix exposes the var to the client; a G-XXXX id
+// is not a secret. Unconfigured builds simply omit the tag (fail-safe).
+const GA_ID = import.meta.env.PUBLIC_GA_ID;
+const enableAnalytics = import.meta.env.PROD && Boolean(GA_ID);
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +21,17 @@ const base = import.meta.env.BASE_URL;
   <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  {enableAnalytics && (
+    <Fragment>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} is:inline></script>
+      <script is:inline define:vars={{ GA_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', GA_ID);
+      </script>
+    </Fragment>
+  )}
 </head>
 <body>
   <canvas id="cosmic-canvas"></canvas>
