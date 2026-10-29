@@ -39,6 +39,8 @@ export interface Research {
   title: string;
   venue: string;
   coauthors?: string[];
+  authors?: string;
+  url?: string;
 }
 
 export interface CareerData {
