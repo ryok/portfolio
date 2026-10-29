@@ -7,11 +7,6 @@ interface Props {
 
 const { publications } = Astro.props;
 
-const urls: Record<string, string> = {
-  'ニューラルネットワークの知識蒸留による方程式抽出': 'https://www.jstage.jst.go.jp/article/pjsai/JSAI2022/0/JSAI2022_4Yin223/_article/-char/ja/',
-  'Construction and Validation of Action-Conditioned VideoGPT': 'https://www.jstage.jst.go.jp/article/pjsai/JSAI2023/0/JSAI2023_1G4OS21a02/_article/-char/en',
-  'Imitation Learning with Mid-Level Representations for Object Rearrangement': 'https://www.jstage.jst.go.jp/article/pjsai/JSAI2022/0/JSAI2022_3L4GS803/_article/-char/en',
-};
 ---
 
 <section id="research" class="section">
@@ -19,10 +14,16 @@ const urls: Record<string, string> = {
     <h2 class="section-title">Research Publications</h2>
     <div class="research-list">
       {publications.map(pub => (
-        <a href={urls[pub.title] || '#'} target="_blank" rel="noopener" class="research-item glass">
+        <a href={pub.url || '#'} target="_blank" rel="noopener" class="research-item glass">
           <div class="research-venue">{pub.venue}</div>
           <h3>{pub.title}</h3>
-          {pub.coauthors && (
+          {pub.authors ? (
+            <p class="research-authors">
+              {pub.authors.split(', ').map((name, i) => (
+                <>{i > 0 && ', '}{name === '岡田領' ? <strong>{name}</strong> : name}</>
+              ))}
+            </p>
+          ) : pub.coauthors && (
             <p class="research-authors">
               <strong>Ryo Okada</strong>, {pub.coauthors.join(', ')}
             </p>
