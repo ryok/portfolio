@@ -53,6 +53,7 @@ export interface CareerData {
   history: CareerEntry[];
   education: Education[];
   sidework?: CareerEntry[];
+  teaching?: CareerEntry[];
   research: Research[];
 }
 
