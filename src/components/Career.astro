@@ -46,6 +46,23 @@ const { career } = Astro.props;
         </>
       )}
 
+      {career.teaching && career.teaching.length > 0 && (
+        <>
+          <div class="timeline-divider">Teaching</div>
+          {career.teaching.map(entry => (
+            <div class="timeline-item">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content glass">
+                <div class="timeline-period">{entry.period}</div>
+                <h3>{entry.organization}</h3>
+                <p class="timeline-role">{entry.role}</p>
+                <p class="timeline-focus">{entry.focus}</p>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+
       <div class="timeline-divider">Education</div>
 
       {career.education.map(edu => (
