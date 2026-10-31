@@ -135,13 +135,17 @@ const activePlatforms = writings.platforms.filter(p => p.articles?.length > 0);
   .article-title {
     font-size: 0.9rem;
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .article-year {
     font-size: 0.75rem;
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
-    white-space: nowrap;
+    max-width: 50%;
+    text-align: right;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 480px) {

@@ -58,7 +58,7 @@ const { skills } = Astro.props;
 <style>
   .skills-layout {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     gap: 40px;
   }
 
@@ -135,19 +135,23 @@ const { skills } = Astro.props;
     font-size: 0.8rem;
     color: var(--text-secondary);
     flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .cert-year {
     font-size: 0.7rem;
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
-    white-space: nowrap;
+    max-width: 50%;
+    text-align: right;
+    overflow-wrap: anywhere;
     opacity: 0.6;
   }
 
   @media (max-width: 768px) {
     .skills-layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 32px;
     }
   }
