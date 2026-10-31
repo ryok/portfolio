@@ -32,10 +32,10 @@ jobs:
         run: |
           mkdir -p src/data
           for file in projects.yaml career.yaml skills.yaml talks.yaml writings.yaml; do
-            curl -sL -H "Authorization: token $GH_TOKEN" \
+            curl -sSL --fail-with-body -H "Authorization: token $GH_TOKEN" \
               -H "Accept: application/vnd.github.raw+json" \
               "https://api.github.com/repos/ryok/LIFE/contents/portfolio/$file" \
-              -o "src/data/$file"
+              -o "src/data/$file" || { cat "src/data/$file"; exit 1; }
           done
 
       - name: Install dependencies
