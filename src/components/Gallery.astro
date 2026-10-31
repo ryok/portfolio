@@ -7,7 +7,7 @@ interface Props {
 
 const { projects } = Astro.props;
 const artProjects = projects.filter(p => p.type === 'art');
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <section id="gallery" class="section">

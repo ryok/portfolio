@@ -3,7 +3,7 @@ interface Props {
   title?: string;
 }
 const { title = "Ryo Okada - Portfolio" } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // Google Analytics 4: load only in production builds and only when an id is
 // configured. The PUBLIC_ prefix exposes the var to the client; a G-XXXX id
