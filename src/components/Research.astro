@@ -17,10 +17,11 @@ const { publications } = Astro.props;
         <a href={pub.url || '#'} target="_blank" rel="noopener" class="research-item glass">
           <div class="research-venue">{pub.venue}</div>
           <h3>{pub.title}</h3>
+          {pub.title_ja && <p class="research-title-ja" lang="ja">{pub.title_ja}</p>}
           {pub.authors ? (
             <p class="research-authors">
               {pub.authors.split(', ').map((name, i) => (
-                <>{i > 0 && ', '}{name === '岡田領' ? <strong>{name}</strong> : name}</>
+                <>{i > 0 && ', '}{name === 'Ryo Okada' || name === '岡田領' ? <strong>{name}</strong> : name}</>
               ))}
             </p>
           ) : pub.coauthors && (
@@ -35,6 +36,12 @@ const { publications } = Astro.props;
 </section>
 
 <style>
+  .research-title-ja {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
   .research-list {
     display: flex;
     flex-direction: column;
