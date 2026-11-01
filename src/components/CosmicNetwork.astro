@@ -7,6 +7,8 @@
   const maxParticles = 80;
   const connectionDistance = 120;
   let particles: any[] = [];
+  // Respect the OS "reduce motion" setting: draw a single still frame.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const sectionColors: Record<string, {r: number, g: number, b: number}> = {
     hero: { r: 100, g: 200, b: 255 },
@@ -102,6 +104,9 @@
     }
 
     p.setup = () => {
+      // A blurred background doesn't need retina resolution; at DPR 3 this
+      // cuts the pixels filled per frame by 9x.
+      p.pixelDensity(1);
       const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
       canvas.parent('cosmic-canvas');
       canvas.style('position', 'fixed');
@@ -111,6 +116,7 @@
       for (let i = 0; i < 25; i++) {
         particles.push(new Particle(p.random(p.width), p.random(p.height)));
       }
+      if (reduceMotion) p.noLoop();
     };
 
     p.draw = () => {
@@ -185,6 +191,7 @@
 
     p.windowResized = () => {
       p.resizeCanvas(p.windowWidth, p.windowHeight);
+      if (reduceMotion) p.redraw();
     };
   }, document.getElementById('cosmic-canvas')!);
 </script>
