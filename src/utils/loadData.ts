@@ -5,7 +5,28 @@ import yaml from 'js-yaml';
 function loadYaml<T>(filename: string): T {
   const filePath = path.resolve('src/data', filename);
   const content = fs.readFileSync(filePath, 'utf-8');
-  return yaml.load(content) as T;
+  return localize(yaml.load(content)) as T;
+}
+
+// The site is English-first. YAML keeps the Japanese source text and adds
+// `<key>_en` alongside it; here `<key>_en` replaces `<key>`, and the original
+// stays available as `<key>_ja` (e.g. Research shows the original title).
+function localize(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(localize);
+  if (value === null || typeof value !== 'object' || value instanceof Date) return value;
+  const src = value as Record<string, unknown>;
+  const out: Record<string, unknown> = {};
+  for (const [key, v] of Object.entries(src)) {
+    if (key.endsWith('_en')) continue;
+    out[key] = localize(v);
+  }
+  for (const [key, v] of Object.entries(src)) {
+    if (!key.endsWith('_en')) continue;
+    const base = key.slice(0, -3);
+    if (base in src) out[`${base}_ja`] = out[base];
+    out[base] = localize(v);
+  }
+  return out;
 }
 
 export interface Project {
@@ -37,6 +58,7 @@ export interface Education {
 
 export interface Research {
   title: string;
+  title_ja?: string;
   venue: string;
   coauthors?: string[];
   authors?: string;
