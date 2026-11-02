@@ -1,5 +1,6 @@
 ---
 const accounts = [
+  { icon: 'fa-solid fa-envelope', url: 'mailto:hello@ryookada.dev', label: 'hello@ryookada.dev' },
   { icon: 'fa-brands fa-github', url: 'https://github.com/ryok', label: 'GitHub' },
   { icon: 'fa-brands fa-x-twitter', url: 'https://x.com/ryok_dev', label: 'X (Twitter)' },
   { icon: 'fa-brands fa-linkedin-in', url: 'https://www.linkedin.com/in/ryookada-5298765a/', label: 'LinkedIn' },
@@ -12,10 +13,10 @@ const accounts = [
   <div class="container">
     <h2 class="section-title">Contact</h2>
     <div class="contact-content">
-      <p>Feel free to reach out through any of these platforms.</p>
+      <p>For work inquiries, email is the best way to reach me. I'm also on these platforms.</p>
       <div class="contact-grid">
         {accounts.map(acc => (
-          <a href={acc.url} target="_blank" rel="noopener" class="contact-link glass">
+          <a href={acc.url} {...(acc.url.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})} class="contact-link glass">
             <i class={acc.icon}></i>
             <span>{acc.label}</span>
           </a>
